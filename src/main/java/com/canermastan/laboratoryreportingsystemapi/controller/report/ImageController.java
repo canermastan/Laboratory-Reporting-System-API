@@ -1,4 +1,4 @@
-package com.canermastan.laboratoryreportingsystemapi.controller;
+package com.canermastan.laboratoryreportingsystemapi.controller.report;
 
 import com.canermastan.laboratoryreportingsystemapi.entity.ImageData;
 import com.canermastan.laboratoryreportingsystemapi.service.image.ImageService;
