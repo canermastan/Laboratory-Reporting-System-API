@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -23,4 +22,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     List<Report> findAllByPatientIdentityNumber(String identityNumber);
     List<Report> findAllByReportDate(LocalDate reportDate);
+
+    Report findByReportNo(String reportNo);
 }

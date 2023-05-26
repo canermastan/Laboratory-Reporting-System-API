@@ -20,12 +20,12 @@ public class ImageServiceImpl implements ImageService{
     private final ReportService reportService;
 
     @Override
-    public ImageData saveImage(MultipartFile file, Long reportId) {
+    public ImageData saveReportImage(MultipartFile file, Long reportId) {
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try{
             if(fileName.contains("..")) {
-                throw new Exception("Sorry! Filename contains invalid path sequence " + fileName);
+                throw new Exception("Hata! Dosya adı geçersiz yol dizisi içeriyor " + fileName);
             }
 
             ImageData imageData = new ImageData();

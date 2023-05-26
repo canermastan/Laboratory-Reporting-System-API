@@ -3,10 +3,8 @@ package com.canermastan.laboratoryreportingsystemapi.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 
 import java.sql.Types;
-import java.util.Set;
 
 @Entity
 @Table(name = "images")

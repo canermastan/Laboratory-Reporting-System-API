@@ -41,4 +41,12 @@ public class ReportUtil {
 
         return reportDto;
     }
+
+    public String generateReportNo() {
+        // genellikle 13 haneli rapor numarası üretir.
+        // benzersizliği sağlamak için kullanıldı.
+        long epochTime = System.currentTimeMillis();
+
+        return String.valueOf(epochTime);
+    }
 }

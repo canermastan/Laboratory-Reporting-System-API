@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -84,5 +83,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> findAllByLaboratoryTechnicianFirstNameOrLastName(String name) {
         return reportRepository.findAllByLaboratoryTechnicianFirstNameOrLastName(name);
+    }
+
+    @Override
+    public Report findByReportNo(String reportNo) {
+        return reportRepository.findByReportNo(reportNo);
     }
 }

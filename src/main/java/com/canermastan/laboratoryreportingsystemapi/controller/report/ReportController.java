@@ -1,12 +1,13 @@
 package com.canermastan.laboratoryreportingsystemapi.controller.report;
 
+import com.canermastan.laboratoryreportingsystemapi.entity.ImageData;
 import com.canermastan.laboratoryreportingsystemapi.entity.Report;
 import com.canermastan.laboratoryreportingsystemapi.entity.User;
 import com.canermastan.laboratoryreportingsystemapi.entity.dtos.ReportDto;
+import com.canermastan.laboratoryreportingsystemapi.service.image.ImageService;
 import com.canermastan.laboratoryreportingsystemapi.service.report.ReportService;
 import com.canermastan.laboratoryreportingsystemapi.service.user.UserService;
 import com.canermastan.laboratoryreportingsystemapi.utils.ReportUtil;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -14,9 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,16 +28,18 @@ import java.util.List;
 @RequestMapping("/api/v1/report")
 public class ReportController {
 
-    public ReportController(ReportService reportService, UserService userService, ModelMapper modelMapper, ReportUtil reportUtil) {
+    public ReportController(ReportService reportService, UserService userService, ModelMapper modelMapper, ReportUtil reportUtil, ImageService imageService) {
         this.reportService = reportService;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.reportUtil = reportUtil;
+        this.imageService = imageService;
     }
     private final ReportService reportService;
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final ReportUtil reportUtil;
+    private final ImageService imageService;
 
     private static final Logger logger = LoggerFactory.getLogger(ReportController.class);
 
@@ -86,6 +91,13 @@ public class ReportController {
         return ResponseEntity.ok(reportUtil.reportListToReportDtoList(reports));
     }
 
+    @GetMapping("/report-no/{reportNo}")
+    public ResponseEntity<ReportDto> findByReportNo(@PathVariable("reportNo") String reportNo){
+        Report report = reportService.findByReportNo(reportNo);
+
+        return ResponseEntity.ok(reportUtil.reportToReportDto(report));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ReportDto> findById(@PathVariable("id") Long id) {
         Report report = reportService.findById(id);
@@ -95,12 +107,12 @@ public class ReportController {
 
     @PostMapping("/save")
     public ResponseEntity<ReportDto> save(@RequestBody @Valid ReportDto reportDto, Authentication authentication) {
-        System.out.println(authentication.getName());
         User user = userService.findByEmail(authentication.getName());
 
         Report report = modelMapper.map(reportDto, Report.class);
         report.setUser(user);
         report.setReportDate(LocalDate.now());
+        report.setReportNo(reportUtil.generateReportNo());
 
         Report reportDb = reportService.save(report);
 
@@ -129,6 +141,11 @@ public class ReportController {
     public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
         reportService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/image/upload/{reportId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ImageData uploadImage(@PathVariable Long reportId, @RequestParam("file") MultipartFile file) {
+        return imageService.saveReportImage(file, reportId);
     }
 
 }

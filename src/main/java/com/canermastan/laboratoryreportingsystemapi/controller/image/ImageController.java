@@ -1,4 +1,4 @@
-package com.canermastan.laboratoryreportingsystemapi.controller.report;
+package com.canermastan.laboratoryreportingsystemapi.controller.image;
 
 import com.canermastan.laboratoryreportingsystemapi.entity.ImageData;
 import com.canermastan.laboratoryreportingsystemapi.service.image.ImageService;
@@ -7,8 +7,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/image")
@@ -17,11 +19,6 @@ public class ImageController {
         this.imageService = imageService;
     }
     private final ImageService imageService;
-
-    @PostMapping(value = "/upload/{reportId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ImageData uploadImage(@PathVariable Long reportId, @RequestParam("file") MultipartFile file) {
-        return imageService.saveImage(file, reportId);
-    }
 
     @GetMapping("/download/{fileId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable String fileId) {
