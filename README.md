@@ -1,55 +1,52 @@
-# Laboratuvar Raporlama Uygulaması
 
-Bu proje, laboratuvar raporlarının yönetimi için geliştirilmiş bir web uygulamasıdır. Backend kısmı Java ve Spring Boot kullanılarak, frontend kısmı ise React ile geliştirilmiştir. Proje, raporların tanımlanması, güncellenmesi, silinmesi ve listelenmesi gibi işlevleri destekler. Ayrıca, JWT ile güvenli giriş sağlanmıştır.
+# Laboratory Reporting Application
 
-## Diğer Repo
+This project is a web application developed for the management of laboratory reports. The backend is built using Java and Spring Boot, while the frontend is developed with React. The project supports functions such as creating, updating, deleting, and listing reports. Additionally, secure login is provided via JWT.
 
-Bu proje için kullanılan frontend kodlarına [buradan](https://github.com/canermastan/Laboratory-Reporting-System-UI) ulaşabilirsiniz.
+## Other Repository
 
+You can access the frontend code used for this project [here](https://github.com/canermastan/Laboratory-Reporting-System-UI).
 
-## Kurulum
+## Installation
 
 ### Java (Backend)
 ```bash
 ./mvnw spring-boot:run
 ```
-Proje PostgreSQL veritabanı ile çalışacak şekilde konfigüre edilmiştir. Veritabanı ayarlarını application.properties dosyasında güncelleyebilirsiniz. PostgreSQL ayarları:
+The project is configured to work with a PostgreSQL database. You can update the database settings in the `application.properties` file. The PostgreSQL settings are:
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
 spring.datasource.username=postgres
 spring.datasource.password=root
 ```
 
-### Kullanıcı Bilgileri
-Uygulama başlatıldığında admin ve kullanıcı hesapları otomatik olarak oluşturulmaktadır. Kullanıcı bilgileri aşağıdaki gibidir:
+### User Information
+When the application starts, admin and user accounts are automatically created. The user information is as follows:
 
 #### Admin
 ```
 Email: admin@test.com
-Parola: 123456
+Password: 123456
 ```
 
 #### User
 ```
 Email: user@test.com
-Parola: 123456
+Password: 123456
 ```
 
-### Teknik Detaylar
-#### UI Kütüphanesi
-Bu uygulamada, geliştiricilerin kodu hızlı ve etkili bir şekilde anlamalarını sağlamak için Semantic UI kullanılmıştır. Semantic UI, anlaşılır bir yapıya sahiptir ve sınıflar ile etiketler semantik isimlendirmeyle anlamlı bir şekilde adlandırılmıştır. Ayrıca, kapsamlı bir dökümantasyona sahip olması nedeniyle tercih edilmiştir.
+### Technical Details
+#### UI Library
+This application uses Semantic UI to help developers understand the code quickly and effectively. Semantic UI has a clear structure and its classes and tags are semantically named. It is also preferred because it has comprehensive documentation.
 
-#### Kimlik Doğrulama Mekanizması
-
-Bu uygulamada, kullanıcıların güvenli bir şekilde giriş yapabilmesi için JSON Web Token (JWT) kullanılmıştır. JWT, modern web uygulamalarında yaygın olarak kullanılan bir kimlik doğrulama standardıdır.
+#### Authentication Mechanism
+This application uses JSON Web Token (JWT) for secure user authentication. JWT is a widely used authentication standard in modern web applications.
 
 #### Data Transfer Object (DTO)
+DTO (Data Transfer Object) is a design pattern optimized for data transfer. It effectively transfers data objects in communication with databases or external services. DTOs reduce network traffic, improve client application performance, and ensure that only required data is accessed. In this application, the DTO design pattern is used to simplify users' access to only the necessary data.
 
-DTO (Data Transfer Object), veri transferi için optimize edilmiş bir tasarım desenidir. Veri tabanı veya harici servislerle iletişimde veri nesnelerini etkili bir şekilde aktarır. DTO'lar, ağ trafiğini azaltarak istemci uygulamanın performansını artırır ve sadece gereksinim duyulan verilerin alınmasını sağlar. Bu uygulamada DTO tasarım deseni, kullanıcıların sadece ihtiyaç duyduğu verilere erişimini kolaylaştırmak için tercih edilmiştir.
-
-#### Cache Mekanizması
-
-REST API'lerde performansı artırmak ve sunucu yükünü azaltmak için cache mekanizması kullanılır. Cache, veri veya yanıtların geçici olarak saklandığı bir bellek alanıdır. Bu uygulamada özel bir cache mekanizması kullanılmasa da, performans gereksinimleri göz önünde bulundurularak Spring'in cache kabiliyetinden az da olsa faydalanılmıştır.
+#### Cache Mechanism
+In REST APIs, a cache mechanism is used to enhance performance and reduce server load. A cache is a memory area where data or responses are temporarily stored. While this application does not use a custom cache mechanism, Spring's cache capabilities are utilized to some extent, considering performance requirements.
 
 ## Endpoints
 
@@ -57,7 +54,7 @@ REST API'lerde performansı artırmak ve sunucu yükünü azaltmak için cache m
 
 **POST /auth/register**
 
-Kullanıcı sisteme kayıt olur.
+User registers to the system.
 
 Request Body:
 ```json
@@ -72,7 +69,7 @@ Request Body:
 
 **POST /auth/login**
 
-Kullanıcı sisteme giriş yapar.
+User logs in to the system.
 
 Request Body:
 ```json
@@ -81,30 +78,31 @@ Request Body:
   "password": "123456"
 }
 ```
+
 ### Image
 ```
 POST /image/upload/{reportId}
 ```
 
-Rapora fotoğraf tanımlar.
+Defines a photo for the report.
 
 ```
 GET /image/download/{fileId}
 ```
 
-Rapora tanımlı fotoğrafı getirir.
+Retrieves the photo defined for the report.
 
 ### Report
 ```
 GET /api/v1/report/all
 ```
-Tüm raporları getirir.
+Fetches all reports.
+
 ```
 GET /api/v1/report/{id}
 ```
 
-ID ile eşleşen raporu getirir.
-
+Fetches the report matching the ID.
 
 ****
 
@@ -112,7 +110,6 @@ ID ile eşleşen raporu getirir.
 
 Request Body:
 ```json
-
 {
   "reportNo": "",
   "patientFirstName": "",
@@ -121,19 +118,18 @@ Request Body:
   "diagnosisTitle": "",
   "diagnosisDetail": ""
 }
-
 ```
 
-Yeni rapor ekler.
-
+Adds a new report.
 
 ```
 PUT /api/v1/report/upload/{id}
 ```
 
-ID ile eşleşen raporu günceller.
+Updates the report matching the ID.
 
 ```
 DELETE /api/v1/report/delete/{id}
 ```
-ID ile eşleşen raporu siler (bu işlemi sadece admin kullanıcılar yapabilir).
+
+Deletes the report matching the ID (only admin users can perform this action).
